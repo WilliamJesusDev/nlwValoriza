@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { CreateTagService } from "../services/CreateTagService";
+
+import { CreateTagService } from "../../../api/services/CreateTagService";
 
 class CreateTagController {
   async handle(req: Request, res: Response) {
@@ -7,7 +8,7 @@ class CreateTagController {
 
     const createTagService = new CreateTagService();
 
-    const tag = await createTagService.execute(name);
+    const tag = await createTagService.execute({ name });
 
     return res.status(201).json(tag);
   }

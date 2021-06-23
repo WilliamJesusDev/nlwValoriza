@@ -1,14 +1,10 @@
 import { getCustomRepository } from "typeorm";
+
+import { IUserRequestDTO } from "../dtos/IUserRequestDTO";
 import { UsersRepository } from "../repositories/UsersRepository";
 
-interface IUserRequest {
-  name: string;
-  email: string;
-  admin?: boolean;
-}
-
 class CreateUserService {
-  async execute({ name, email, admin }: IUserRequest) {
+  async execute({ name, email, admin }: IUserRequestDTO) {
     const usersRepository = getCustomRepository(UsersRepository);
 
     if (!email) {
