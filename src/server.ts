@@ -3,9 +3,8 @@ import "dotenv/config";
 import "./infra/database";
 
 import { app } from "./app";
+import { port } from "./config/env";
 
-const PORT = process.env.PORT || 3333;
-
-app.listen(PORT, () =>
-  console.log(`Server is running on http://localhost:${PORT}`)
+app.listen(port, () =>
+  console.log(`Server is running on http://localhost:${port}`)
 );
