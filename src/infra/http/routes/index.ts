@@ -4,13 +4,25 @@ import { AuthenticateUserController } from "../controllers/AuthenticateUserContr
 import { CreateComplimentController } from "../controllers/CreateComplimentController";
 import { CreateTagController } from "../controllers/CreateTagController";
 import { CreateUserController } from "../controllers/CreateUserController";
+import { ListUserReceiveComplimentsController } from "../controllers/ListUserReceiveComplimentsController";
+import { ListUserSendComplimentsController } from "../controllers/ListUserSendComplimentsController";
+import { ListTagsController } from "../controllers/ListTagsController";
+import { ListUsersController } from "../controllers/ListUsersController";
 
 import { ensureAdmin } from "../../../helpers/ensureAdmin";
+import { ensureAuthenticated } from "../../../helpers/ensureAuthenticated";
 
 const authenticateUserController = new AuthenticateUserController();
 const createComplimentController = new CreateComplimentController();
 const createTagController = new CreateTagController();
 const createUserController = new CreateUserController();
+const listTagsController = new ListTagsController();
+const listUsersController = new ListUsersController();
+
+const listUserReceiveComplimentsController =
+  new ListUserReceiveComplimentsController();
+const listUserSendComplimentsController =
+  new ListUserSendComplimentsController();
 
 const router = Router();
 
@@ -22,8 +34,33 @@ router.post("/sessions", authenticateUserController.handle);
 
 router.post("/users", createUserController.handle);
 
-router.post("/tags", ensureAdmin, createTagController.handle);
+router.get("/users", ensureAuthenticated, listUsersController.handle);
 
-router.post("/compliments", ensureAdmin, createComplimentController.handle);
+router.post(
+  "/tags",
+  ensureAuthenticated,
+  ensureAdmin,
+  createTagController.handle
+);
+
+router.get("/tags", ensureAuthenticated, listTagsController.handle);
+
+router.post(
+  "/compliments",
+  ensureAuthenticated,
+  createComplimentController.handle
+);
+
+router.get(
+  "/compliments/receive",
+  ensureAuthenticated,
+  listUserReceiveComplimentsController.handle
+);
+
+router.get(
+  "/compliments/send",
+  ensureAuthenticated,
+  listUserSendComplimentsController.handle
+);
 
 export { router };
